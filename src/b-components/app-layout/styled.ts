@@ -55,6 +55,11 @@ export const SC_Appcnt = styled.div`
     padding-bottom: var(--bottom-nav-height-total);
   }
 
+  /* Док Stitch выше нижнего бара: 46px кнопки + 8px поля + 8px отступ снизу. */
+  &.has-stitch-dock {
+    padding-bottom: calc(var(--safe-bottom) + 74px);
+  }
+
   /* Мини-плеер: на компьютере карточка внизу слева, на телефоне — полоса над
      нижней панелью. Последние строки страницы не должны оставаться под ним. */
   .has-mini-player & {

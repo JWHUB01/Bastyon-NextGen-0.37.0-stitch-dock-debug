@@ -7,12 +7,19 @@
     <SC_Camera id="camera" />
     <StarExplosion />
 
-    <SC_Appcnt id="app-content" :class="{ 'has-bottom-nav': isMobileOrTablet }">
+    <SC_Appcnt
+      id="app-content"
+      :class="{
+        'has-bottom-nav': isMobileOrTablet && !stitchShell,
+        'has-stitch-dock': isMobileOrTablet && stitchShell,
+      }"
+    >
       <AppHeader />
       <router-view :key="pageKey" />
     </SC_Appcnt>
 
-    <BottomNav v-if="isMobileOrTablet" />
+    <StitchShell v-if="isMobileOrTablet && stitchShell" />
+    <BottomNav v-else-if="isMobileOrTablet" />
 
     <MiniPlayer />
 
@@ -43,6 +50,7 @@ import UpdateModal from '@/b-components/app-update/update-modal.vue'
 import VoiceModelModal from '@/b-components/voice-input/voice-model-modal.vue'
 import { StarExplosion } from '@/b-components/effects/star-explosion'
 import BottomNav from '@/b-components/bottom-nav/bottom-nav.vue'
+import StitchShell from '@/b-components/stitch-shell/stitch-shell.vue'
 import MiniPlayer from '@/b-components/media/mini-player/mini-player.vue'
 import { useUIStore } from '@/stores/ui-store'
 import { classifyContentLink } from '@/helpers/common/content-link'
@@ -62,6 +70,9 @@ const router = useRouter()
 // Новая страница — диктору её название (use-route-announcer).
 useRouteAnnouncer(router)
 const { isMobileOrTablet } = useViewport()
+// Оболочка Stitch: док с панелями вместо нижней навигации. Выключатель —
+// чтобы можно было вернуть прежний бар, не откатывая компонент.
+const stitchShell = true
 // Сменили аккаунт — на ленту, страница собирается заново.
 const pageKey = useAccountSwitchReset()
 
